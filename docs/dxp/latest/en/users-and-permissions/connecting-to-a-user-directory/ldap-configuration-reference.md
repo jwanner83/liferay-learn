@@ -42,7 +42,7 @@ You can import user data from LDAP directories using the following options:
 
 **Import Method:** Set either User or Group. If you set this to User, Liferay imports all users from the location specified in the server connection. If you set this to Group, Liferay searches all the groups and imports the users in each group. If you have users who do not belong to any groups, they are not imported.
 
-**Lock Expiration Time:** Set the account lock expiration time for LDAP User import. The default is one day.
+**Lock Expiration Time:** Set the lock expiration time in milliseconds for the LDAP import. The default is one day. This lock is used to prevent multiple imports from happening at the same time. For example, if you reduce the import interval to 1 minute, but it takes 5 minutes for the import of all users/groups from ldap to complete, the lock will prevent the other import attempts at minute 2, 3, 4, and 5 from starting. With the 1 day default, it ensures that, across the cluster, only one import is occurring at a time. It also means that, if an import crashes and doesn’t get a chance to release the lock, your next import will not occur for 24 hours.
 
 **Import User Sync Strategy:** Set the strategy used to sync user accounts. Options are Auth Type (i.e., the way the user authenticates, like with screen name) and UUID (requires a UUID attribute in LDAP).
 
